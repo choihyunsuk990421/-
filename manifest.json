@@ -1,0 +1,17 @@
+{
+  "name": "日语学习",
+  "short_name": "日语学习",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8f5f1",
+  "theme_color": "#d96f61",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

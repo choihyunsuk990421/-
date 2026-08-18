@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d96f61">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="日语学习">
+<link rel="manifest" href="manifest.json">
+<title>日语学习 🌸</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8f5f1;color:#292725;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans SC","Hiragino Sans",sans-serif}
+.app{max-width:520px;margin:auto;min-height:100vh;padding:20px 16px 100px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-weight:800;font-size:21px}.streak{background:white;border:1px solid #eee4dd;padding:8px 12px;border-radius:20px;font-size:13px}
+.screen{display:none}.screen.active{display:block}.card{background:#fff;border:1px solid #eee4dd;border-radius:22px;padding:20px;margin:12px 0;box-shadow:0 6px 20px #4b342010}.hero{background:linear-gradient(135deg,#fff,#fff1ed)}h1{font-size:26px;line-height:1.25;margin:7px 0}h2{font-size:18px;margin:0 0 12px}.muted{color:#918982;font-size:14px}.progress{height:8px;background:#eee8e2;border-radius:8px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;background:#d96f61;transition:.3s}.btn{border:0;border-radius:15px;padding:14px 16px;width:100%;background:#d96f61;color:#fff;font-weight:700;font-size:15px}.btn.secondary{background:#f5eae6;color:#a95549}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{background:#fff;border:1px solid #eee4dd;border-radius:17px;padding:16px}.tile b{display:block;font-size:21px;margin-bottom:5px}.list{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #f0e9e3}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee4dd;padding-bottom:env(safe-area-inset-bottom);z-index:10}.navin{max-width:520px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr)}.nav button{border:0;background:none;padding:11px;color:#918982;font-size:12px}.nav button.active{color:#d96f61;font-weight:700}.kana{text-align:center;font-size:76px;font-weight:800;margin:20px 0 2px}.roman{text-align:center;color:#d96f61;font-size:20px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.choice{border:1px solid #eee4dd;background:#fff;border-radius:15px;padding:16px;font-size:19px}.choice.correct{background:#edf7f0;border-color:#67a984}.choice.wrong{background:#fff0ed;border-color:#d96f61}.flash{text-align:center;min-height:250px;display:flex;flex-direction:column;justify-content:center}.word{font-size:42px;font-weight:800}.reading{color:#d96f61;font-size:20px;margin:8px}.meaning{font-size:19px}.tag{display:inline-block;margin-top:10px;background:#f6ece8;border-radius:20px;padding:5px 9px;font-size:12px}.small{font-size:12px;color:#918982}.empty{text-align:center;color:#918982;padding:25px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top"><div class="brand">🌸 日语学习</div><div class="streak">🔥 <span id="days">0</span> 天</div></div>
+
+<section id="home" class="screen">
+<div class="card hero"><div class="muted">今日学习</div><h1>先复习五十音，再开始吧。</h1><div class="progress"><div class="bar" id="bar"></div></div><div class="muted" id="summary">五十音 0% · 单词 0%</div><br><button class="btn" onclick="startKana()">开始今日五十音</button></div>
+<div class="grid"><div class="tile"><b>🇯🇵 5</b><span class="muted">今日五十音</span></div><div class="tile"><b>📚 10</b><span class="muted">今日单词</span></div><div class="tile"><b>🔴 <span id="review">0</span></b><span class="muted">易忘假名</span></div><div class="tile"><b>⭐ <span id="points">0</span></b><span class="muted">学习积分</span></div></div>
+<div class="card"><h2>今日建议</h2><div class="list"><span>① 五十音小测</span><span>1–3 分钟</span></div><div class="list"><span>② 单词闪卡</span><span>5 分钟</span></div><div class="list"><span>③ 日语短句</span><span>5 分钟</span></div></div>
+</section>
+
+<section id="kana" class="screen"><div class="card"><div class="muted">五十音复习 · <span id="qnum">1</span>/5</div><div class="kana" id="kc">あ</div><div class="roman">选择正确读音</div><div class="choices" id="choices"></div><p class="small" id="feedback"></p></div></section>
+
+<section id="words" class="screen"><div class="card flash"><div class="muted">单词闪卡</div><div class="word" id="word"></div><div class="reading" id="reading"></div><div class="meaning" id="meaning"></div><div><span class="tag" id="tag"></span></div></div><div class="grid"><button class="btn secondary" onclick="rateWord(false)">不会</button><button class="btn" onclick="rateWord(true)">认识</button></div></section>
+
+<section id="stats" class="screen"><div class="card"><h2>📊 学习统计</h2><div class="grid"><div class="tile"><b id="total">0</b><span class="muted">累计答题</span></div><div class="tile"><b id="accuracy">0%</b><span class="muted">正确率</span></div><div class="tile"><b id="sp">0</b><span class="muted">学习积分</span></div><div class="tile"><b id="streak2">0</b><span class="muted">连续学习</span></div></div></div><div class="card"><h2>🔴 我的易忘五十音</h2><div id="mistakes" class="empty">目前没有易忘假名。</div></div></section>
+</div>
+<div class="nav"><div class="navin"><button class="active" onclick="show('home',this)">🏠<br>首页</button><button onclick="show('words',this)">📚<br>单词</button><button onclick="show('stats',this)">📊<br>统计</button></div></div>
+
+<script>
+const K=[["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"],["ま","ma"],["み","mi"],["む","mu"],["め","me"],["も","mo"],["や","ya"],["ゆ","yu"],["よ","yo"],["ら","ra"],["り","ri"],["る","ru"],["れ","re"],["ろ","ro"],["わ","wa"],["を","wo"],["ん","n"]];
+const W=[["食べる","たべる","吃","动词・一类"],["飲む","のむ","喝","动词・一类"],["今日","きょう","今天","名词"],["明日","あした","明天","名词"],["友達","ともだち","朋友","名词"],["学校","がっこう","学校","名词"],["好き","すき","喜欢","形容动词"],["楽しい","たのしい","开心、有趣","形容词"],["大丈夫","だいじょうぶ","没关系、没事","形容动词"],["ありがとう","ありがとう","谢谢","表达"]];
+let s=JSON.parse(localStorage.getItem("jpPwa")||'{"total":0,"correct":0,"points":0,"days":0,"last":"","mistakes":{},"wi":0}');
+let quiz=[],qi=0;
+function save(){localStorage.setItem("jpPwa",JSON.stringify(s));update()}
+function show(id,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(id==="stats")update()}
+function startKana(){show("kana");quiz=[...K].sort(()=>Math.random()-.5).slice(0,5);qi=0;question()}
+function question(){let [c,r]=quiz[qi];qnum.textContent=qi+1;kc.textContent=c;feedback.textContent="";let a=[r,...K.filter(x=>x[1]!==r).sort(()=>Math.random()-.5).slice(0,3).map(x=>x[1])].sort(()=>Math.random()-.5);choices.innerHTML=a.map(x=>`<button class="choice" onclick="answer('${x}','${r}')">${x}</button>`).join("")}
+function answer(x,r){s.total++;let ok=x===r;if(ok){s.correct++;s.points+=10}else{s.mistakes[quiz[qi][0]]=(s.mistakes[quiz[qi][0]]||0)+1}save();document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(b.textContent===r)b.classList.add("correct");if(b.textContent===x&&!ok)b.classList.add("wrong")});feedback.textContent=ok?"✓ 正确！":"再记一下："+quiz[qi][0]+" = "+r;setTimeout(()=>{qi++;if(qi<5)question();else{let d=new Date().toISOString().slice(0,10);if(s.last!==d){s.days++;s.last=d}s.points+=20;save();show("home",document.querySelector(".nav button"));alert("今日五十音完成！🎉");}},550)}
+function renderWord(){let w=W[s.wi];word.textContent=w[0];reading.textContent=w[1];meaning.textContent=w[2];tag.textContent=w[3]}
+function rateWord(ok){s.points+=ok?5:2;s.wi=(s.wi+1)%W.length;save();renderWord()}
+function update(){days.textContent=s.days;streak2.textContent=s.days;points.textContent=s.points;sp.textContent=s.points;total.textContent=s.total;accuracy.textContent=s.total?Math.round(s.correct/s.total*100)+"%":"0%";let m=Object.entries(s.mistakes).sort((a,b)=>b[1]-a[1]);review.textContent=m.length;mistakes.innerHTML=m.length?m.slice(0,8).map(x=>`<div class="list"><span>🔴 ${x[0]}</span><span>错 ${x[1]} 次</span></div>`).join(""):'目前没有易忘假名。';bar.style.width=Math.min(100,(s.total%10)*10)+"%";summary.textContent=`五十音 ${Math.min(100,(s.total%10)*10)}% · 单词 ${Math.min(100,(s.wi+1)*10)}%`}
+renderWord();update();
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body></html>
